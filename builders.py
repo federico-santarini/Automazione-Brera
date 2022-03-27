@@ -112,11 +112,11 @@ def buildBaseTree(N, companies):
         company[pageElement + 'Indirizzo Location'] = locationAddress
 
         # Descrizione 110 ita
-        desIt = eachCompany['descrizione_110']['it']
+        desIt = eachCompany['descrizione_110']['it'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
         company[pageElement + 'Descrizione 110 ita'] = desIt
 
         # Descrizione 110 eng
-        desEn = eachCompany['descrizione_110']['en']
+        desEn = eachCompany['descrizione_110']['en'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
         company[pageElement + 'Descrizione 110 eng'] = desEn
 
         # Mini eventi (attività, data, ora inizio/fine)
