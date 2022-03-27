@@ -94,6 +94,6 @@ def paginate(N, companiesList):
         paginatedCompanies.append(pageCompanies)
 
     df = pd.DataFrame(data=paginatedCompanies)
-    df.to_csv('test_base_tree.csv', index_label='Pagina', encoding='utf-16')
+    return df
     print('done!')
     
