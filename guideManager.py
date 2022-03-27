@@ -16,7 +16,7 @@ from os.path import abspath
 import builders
 importlib.reload(builders)
 from builders import buildFileTree
-from builders import buildBaseTree
+from builders import buildBaseTree, buildPlusTree
 
 import file_IO
 importlib.reload(file_IO)
@@ -32,4 +32,15 @@ isDraft = True
 ### Instructions
 baseCompanies, plusCompanies, sponsorCompanies = loadCompanies(JSON_PATH)
 
-buildBaseTree(4, baseCompanies)
+# Starting Indexes
+sponsorStartIndex = 1
+plusStartIndex = len(sponsorCompanies)+1
+baseStartIndex = len(sponsorCompanies) + len(plusCompanies)+1
+
+# Sponsor Companies
+
+# Plus Companies
+#buildFileTree('plus', plusCompanies, dwImg=False)
+buildPlusTree(3, plusCompanies, plusStartIndex)
+
+buildBaseTree(4, baseCompanies, baseStartIndex)
