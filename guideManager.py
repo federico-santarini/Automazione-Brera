@@ -16,7 +16,7 @@ from os.path import abspath
 import builders
 importlib.reload(builders)
 from builders import buildFileTree
-from builders import buildBaseTree, buildPlusTree
+from builders import buildBaseTree, buildPlusTree, buildSponsorTree
 
 import file_IO
 importlib.reload(file_IO)
@@ -38,9 +38,12 @@ plusStartIndex = len(sponsorCompanies)+1
 baseStartIndex = len(sponsorCompanies) + len(plusCompanies)+1
 
 # Sponsor Companies
+buildFileTree('sponsor', sponsorCompanies, dwLogo=True, dwImg=True)
+buildSponsorTree(1, sponsorCompanies, sponsorStartIndex)
 
 # Plus Companies
-#buildFileTree('plus', plusCompanies, dwImg=False)
+buildFileTree('plus', plusCompanies, dwLogo=True, dwImg=False)
 buildPlusTree(3, plusCompanies, plusStartIndex)
 
-buildBaseTree(4, baseCompanies, baseStartIndex)
+# Sponsor Companies
+buildBaseTree(3, baseCompanies, baseStartIndex)

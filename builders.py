@@ -95,11 +95,8 @@ def buildBaseTree(N, companies, startIndex):
         company[pageElement + 'Titolo'] = titolo
 
         # Index sequenziale
-        company[pageElement + 'Index sequenziale'] = startIndex
+        company[pageElement + 'Index sequenziale'] = f'{startIndex:#02d}'
         startIndex +=1
-        '''
-        qui il problema sarà automatizzare la sequenzialità fra i vari pacchetti di comunicazione
-        '''
 
         # Espositori (nome)
         exhibitors = [eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']]
@@ -169,12 +166,8 @@ def buildPlusTree(N, companies, startIndex):
         company[pageElement + 'Titolo'] = titolo
 
         # Index sequenziale
-        company[pageElement + 'Index sequenziale'] = startIndex
+        company[pageElement + 'Index sequenziale'] = f'{startIndex:#02d}'
         startIndex +=1
-
-        '''
-        qui il problema sarà automatizzare la sequenzialità fra i vari pacchetti di comunicazione
-        '''
 
         # Espositori (nome)
         exhibitors = [eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']]
@@ -220,8 +213,6 @@ def buildPlusTree(N, companies, startIndex):
         for timespan, dates in groupSameDateAndTime(exhibitions).items():
             days = '/'.join([f'{dd.day:#02d}' for dd in dates])
             month = MONTHS[dates[0].month-1]
-            if nonExhibition and N == 4:
-                timespan = f'{timespan} |'
             mainEventDatesTimes.append(f'{days} {month} {timespan}')
 
         company[pageElement + 'Esposizione'] = ' '.join(mainEventDatesTimes)
@@ -229,8 +220,96 @@ def buildPlusTree(N, companies, startIndex):
         # Logotype (file)
         companyFolder = '/'.join(['/build', 'plus', f"{eachCompany['id']:#03d}_{titolo[:16]}"])
         logoName = basename(eachCompany['logo_azienda_file'])
-        # logoPath = '@' + companyFolder + '/' + logoName
-        # company[pageElement + 'Logotype'] = logoPath
+        if logoName != '':
+            logoPath = companyFolder + '/' + logoName
+            company['@' + pageElement + 'logotype'] = logoPath
+        else:
+            company['@' + pageElement + 'logotype'] = ''
+                
+        # Append company data to companies list
+        companiesList.append(company)
+    
+    df = paginate(N, companiesList)
+    df.to_csv(PROJECT_FOLDER + '/test_plus_tree.csv', index_label='Pagina', encoding='utf-16')
+
+
+def buildSponsorTree(N, companies, startIndex):
+    companiesList = []
+
+    for indexCompany, eachCompany in enumerate(companies):
+        company = {}
+        pageElement = f'{indexCompany%N+1:#02d} '
+
+        # Titolo
+        titolo = eachCompany['titolo']['it']
+        company[pageElement + 'Titolo'] = titolo
+
+        # Index sequenziale
+        company[pageElement + 'Index sequenziale'] = f'{startIndex:#02d}'
+        startIndex +=1
+
+        # Espositori (nome)
+        exhibitors = [eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']]
+        company[pageElement + 'Espositori'] = ', '.join(exhibitors)
+
+        # Location (nome)
+        locationName = eachCompany['location']['nome']
+        company[pageElement + 'Nome Location'] = locationName
+
+        # Location (indirizzo)
+        locationAddress = eachCompany['location']['indirizzo']
+        company[pageElement + 'Indirizzo Location'] = locationAddress
+
+        # Descrizione 380 ita
+        desIt = eachCompany['descrizione_380']['it'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
+        company[pageElement + 'Descrizione 380 ita'] = desIt
+
+        # Descrizione 380 eng
+        desEn = eachCompany['descrizione_380']['en'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
+        company[pageElement + 'Descrizione 380 eng'] = desEn
+
+        # Mini eventi (attività, data, ora inizio/fine)
+        nonExhibitionLenght = len([ev for ev in eachCompany['mini-eventi'] if ev['tipo_attivita']!='esposizione'])
+        nonExhibition = groupNonExhibitions(eachCompany['mini-eventi'])
+        secondaryEventDatesTimes = []
+        if nonExhibition:
+            nonExhibitionCounter = 0
+            for eachKind, events in nonExhibition.items():
+                kindRepr = eachKind.replace('_', ' ').title()
+                groupedEvents = groupSameDateAndTime(events)
+                for timespan, dates in groupedEvents.items():
+                    days = '/'.join([f'{dd.day:#02d}' for dd in dates])
+                    month = MONTHS[dates[0].month-1]
+                    if nonExhibitionCounter != nonExhibitionLenght-1:
+                        timespan = f'{timespan} |'
+                    nonExhibitionCounter += 1
+                    secondaryEventDatesTimes.append(f'{kindRepr} {days} {month} {timespan}')
+        company[pageElement + 'mini-eventi'] = ' '.join(secondaryEventDatesTimes)
+
+        # Esposizione (date, orari inizio/fine)
+        exhibitions = [ev for ev in eachCompany['mini-eventi'] if ev['tipo_attivita']=='esposizione']
+        mainEventDatesTimes = []
+        for timespan, dates in groupSameDateAndTime(exhibitions).items():
+            days = '/'.join([f'{dd.day:#02d}' for dd in dates])
+            month = MONTHS[dates[0].month-1]
+            if nonExhibition and N == 4:
+                timespan = f'{timespan} |'
+            mainEventDatesTimes.append(f'{days} {month} {timespan}')
+
+        company[pageElement + 'Esposizione'] = ' '.join(mainEventDatesTimes)
+        
+        companyFolder = '/'.join(['/build', 'plus', f"{eachCompany['id']:#03d}_{titolo[:16]}"])
+        
+        # Mail
+        email = eachCompany['email']
+        company[pageElement + 'Email'] = email
+        
+        # Sito Web
+        website = eachCompany['sito_web']
+        company[pageElement + 'website'] = website
+
+        # Logotype (file)
+        logoName = basename(eachCompany['logo_azienda_file'])
 
         if logoName != '':
             logoPath = companyFolder + '/' + logoName
@@ -238,11 +317,16 @@ def buildPlusTree(N, companies, startIndex):
         else:
             company['@' + pageElement + 'logotype'] = ''
             
-
+        # Print image (file)
+        printImage = basename(eachCompany['immagine_stampa'])
+        if printImage != '':
+            printImagePath = companyFolder + '/' + printImage
+            company['@' + pageElement + 'Immagine stampa'] = printImagePath
+        else:
+            company['@' + pageElement + 'Immagine stampa'] = ''
 
 
         # Append company data to companies list
         companiesList.append(company)
     df = paginate(N, companiesList)
-    df.to_csv(PROJECT_FOLDER + '/test_plus_tree.csv', index_label='Pagina', encoding='utf-16')
-
+    df.to_csv(PROJECT_FOLDER + '/test_sporsor_tree.csv', index_label='Pagina', encoding='utf-16')
