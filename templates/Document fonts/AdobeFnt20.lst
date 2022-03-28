@@ -1,0 +1,236 @@
+%!Adobe-FontList 1.20
+%Locale:0x409
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:SuisseIntl-Regular
+FamilyName:Suisse Int'l
+StyleName:Regular
+MenuName:Suisse Int'l
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:Suisse Int'l
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/SuisseIntl-Regular.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:130136
+FileModTime:502284500
+NameArray:0,Mac,4,Suisse Int'l
+NameArray:0,Win,1,Suisse Int'l
+NameArray:0,Win,16,Suisse Int'l
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:SuisseIntlMono-Bold
+FamilyName:Suisse Int'l Mono
+StyleName:Bold
+MenuName:Suisse Int'l Mono Bold
+StyleBits:0
+WeightClass:700
+WidthClass:5
+AngleClass:0
+FullName:Suisse Int'l Mono Bold
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/SuisseIntlMono-Bold.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:38192
+FileModTime:468776236
+NameArray:0,Mac,4,Suisse Int'l Mono Bold
+NameArray:0,Win,1,Suisse Int'l Mono Bold
+NameArray:0,Win,16,Suisse Int'l Mono
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:SuisseIntl-SemiBold
+FamilyName:Suisse Int'l
+StyleName:Semi Bold
+MenuName:Suisse Int'l Semi Bold
+StyleBits:0
+WeightClass:600
+WidthClass:5
+AngleClass:0
+FullName:Suisse Int'l Semi Bold
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/SuisseIntl-SemiBold.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:132600
+FileModTime:502284500
+NameArray:0,Mac,4,Suisse Int'l Semi Bold
+NameArray:0,Win,1,Suisse Int'l Semi Bold
+NameArray:0,Win,16,Suisse Int'l
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:SuisseWorks-Bold
+FamilyName:Suisse Works
+StyleName:Bold
+MenuName:Suisse Works Bold
+StyleBits:0
+WeightClass:700
+WidthClass:5
+AngleClass:0
+FullName:Suisse Works Bold
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/SuisseWorks-Bold.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:61784
+FileModTime:468774484
+NameArray:0,Mac,4,Suisse Works Bold
+NameArray:0,Win,1,Suisse Works Bold
+NameArray:0,Win,16,Suisse Works
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:SuisseIntlMono
+FamilyName:Suisse Int'l Mono
+StyleName:Regular
+MenuName:Suisse Int'l Mono
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:Suisse Int'l Mono
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/SuisseIntlMono-Regular.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:25540
+FileModTime:468776172
+NameArray:0,Mac,4,Suisse Int'l Mono
+NameArray:0,Win,1,Suisse Int'l Mono
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:MinionPro-Regular
+FamilyName:Minion Pro
+StyleName:Regular
+MenuName:Minion Pro
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:Minion Pro
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/MinionPro-Regular.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:218640
+FileModTime:566202179
+DesignSize:110
+NameArray:0,Mac,4,Minion Pro
+NameArray:0,Win,1,Minion Pro
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:SuisseBPIntl-Regular
+FamilyName:Suisse BP Int'l
+StyleName:Regular
+MenuName:Suisse BP Int'l Regular
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:Suisse BP Int'l Regular
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/Suisse BP Int'l Regular.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:52892
+FileModTime:341212614
+NameArray:0,Mac,4,Suisse BP Int'l Regular
+NameArray:0,Win,1,Suisse BP Int'l Regular
+NameArray:0,Win,16,Suisse BP Int'l
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:SuisseIntl-Book
+FamilyName:Suisse Int'l
+StyleName:Book
+MenuName:Suisse Int'l Book
+StyleBits:0
+WeightClass:450
+WidthClass:5
+AngleClass:0
+FullName:Suisse Int'l Book
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/SuisseIntl-Book.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:81120
+FileModTime:502284498
+NameArray:0,Mac,4,Suisse Int'l Book
+NameArray:0,Win,1,Suisse Int'l Book
+NameArray:0,Win,16,Suisse Int'l
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:SuisseIntl-Bold
+FamilyName:Suisse Int'l
+StyleName:Bold
+MenuName:Suisse Int'l Bold
+StyleBits:0
+WeightClass:700
+WidthClass:5
+AngleClass:0
+FullName:Suisse Int'l Bold
+WritingScript:Roman
+OutlineFileName:/Users/Federico/Dropbox/Studiolabo/Automazione Guida BDD/template-guida-nuovi Folder/Document fonts/SuisseIntl-Bold.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:137524
+FileModTime:502284498
+NameArray:0,Mac,4,Suisse Int'l Bold
+NameArray:0,Win,1,Suisse Int'l Bold
+NameArray:0,Win,16,Suisse Int'l
+%EndFont
+

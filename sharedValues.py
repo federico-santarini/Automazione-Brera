@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-PROJECT_FOLDER = "/Users/federicosantarini/Documents/GitHub/Automazione-Brera/project_folder"
+PROJECT_FOLDER = "/Users/federico/Documents/GitHub/Automazione-Brera/project_folder"
 JSON_PATH = PROJECT_FOLDER+'/breradesignweek_2019_events_20200122.json'
 
 EXCEPTIONS_CSV = 'exceptions.csv'
