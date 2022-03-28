@@ -29,13 +29,15 @@ from sharedValues import JSON_PATH
 ### Variables
 isDraft = True
 
-### Instructions
 baseCompanies, plusCompanies, sponsorCompanies = loadCompanies(JSON_PATH)
 
 # Starting Indexes
 sponsorStartIndex = 1
 plusStartIndex = len(sponsorCompanies)+1
 baseStartIndex = len(sponsorCompanies) + len(plusCompanies)+1
+
+
+### Instructions
 
 # Sponsor Companies
 buildFileTree('sponsor', sponsorCompanies, dwLogo=True, dwImg=True)

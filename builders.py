@@ -147,6 +147,16 @@ def buildBaseTree(N, companies, startIndex):
             mainEventDatesTimes.append(f'{days} {month} {timespan}')
 
         company[pageElement + 'Esposizione'] = ' '.join(mainEventDatesTimes)
+        
+        # Logotype (file)
+        companyFolder = '/'.join(['/build', 'base', f"{eachCompany['id']:#03d}_{titolo[:16]}"])
+        logoName = basename(eachCompany['logo_azienda_file'])
+        if logoName != '':
+            logoPath = companyFolder + '/' + logoName
+            company['@' + pageElement + 'logotype'] = logoPath
+        else:
+            company['@' + pageElement + 'logotype'] = ''
+
 
 
         # Append company data to companies list
