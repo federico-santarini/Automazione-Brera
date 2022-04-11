@@ -45,10 +45,10 @@ def groupNonExhibitions(mini_events):
 
 
 from os.path import exists
-from os import mkdir
+from os import mkdir, makedirs
 def sensitiveCreateFolder(path):
     if exists(path) is False:
-        mkdir(path)
+        makedirs(path)
 
 
 SEP = '-'*40
@@ -97,3 +97,62 @@ def paginate(N, companiesList):
     return df
     print('done!')
     
+import pandas as pd, numpy as np
+from sklearn.cluster import DBSCAN
+from collections import Counter
+def clusterize(km, companies):
+    # Get lat-lon from companies and transorm it to numpy.nd array
+    coords = pd.DataFrame([{
+        'lat': cc['location']['latitudine'],
+        'lon': cc['location']['longitudine']
+    } for cc in companies]).to_numpy()
+
+    # convert Km to radians
+    kms_per_radian = 6371.0088
+    epsilon = km / kms_per_radian
+
+    # Find locations within km radius
+    db = DBSCAN(eps=epsilon, min_samples=1, algorithm='ball_tree', metric='haversine').fit(np.radians(coords))
+    cluster_labels = db.labels_
+
+    # Group clusters in a list
+    num_clusters = len(set(cluster_labels))
+    clustersList = [coords[cluster_labels == n].tolist() for n in range(num_clusters)]
+    #print('Number of clusters: {}'.format(num_clusters))
+
+    # Create a dictionary with location ad ID for each company
+    allLocations = [{
+        'id': cc['id'],
+        'lat': cc['location']['latitudine'],
+        'lon': cc['location']['longitudine']
+    } for cc in companies]
+
+    # Convert location clusters to ID clusters
+    clusters = []
+    for eachCluster in clustersList:
+        # count items inside each cluster to find duplicates
+        c = Counter(map(tuple,eachCluster))
+
+        # group duplicates locations and non duplicates locations
+        sameLocations = [k for k,v in c.items() if v>1]
+        otherLocations = [k for k,v in c.items() if v==1]
+
+        # Pick the ID for each same lcation looping trough each company location
+        idsCluster=[]
+        for eachSameLocation in sameLocations:
+            for eachLocation in allLocations:
+               if eachLocation['lat'] == eachSameLocation[0] and eachLocation['lon']== eachSameLocation[1]:
+                    idsCluster.append(eachLocation['id'])
+
+        # Pick the ID for each other lcation looping trough each company location
+        for eachOtherLocations in otherLocations:
+            for eachLocation in allLocations:
+               if eachLocation['lat']== eachOtherLocations[0] and eachLocation['lon']== eachOtherLocations[1]:
+                    idsCluster.append(eachLocation['id'])
+        # sort the IDs in each cluster
+        idsCluster.sort()
+        clusters.append(idsCluster)
+
+    # sort clusters
+    clusters.sort()
+    return clusters

@@ -20,7 +20,11 @@ from builders import buildBaseTree, buildPlusTree, buildSponsorTree
 
 import file_IO
 importlib.reload(file_IO)
-from file_IO import loadCompanies
+from file_IO import loadCompanies, saveLabels, saveFakeIndexes
+
+import utils
+importlib.reload(utils)
+from utils import clusterize
 
 # locals
 from sharedValues import JSON_PATH
@@ -29,15 +33,20 @@ from sharedValues import JSON_PATH
 ### Variables
 isDraft = True
 
-baseCompanies, plusCompanies, sponsorCompanies = loadCompanies(JSON_PATH)
+allCompanies, baseCompanies, plusCompanies, sponsorCompanies = loadCompanies(JSON_PATH)
 
 # Starting Indexes
 sponsorStartIndex = 1
 plusStartIndex = len(sponsorCompanies)+1
 baseStartIndex = len(sponsorCompanies) + len(plusCompanies)+1
 
-
 ### Instructions
+
+# Clusterize and export csvs for mapmaking
+locationsClusters = clusterize(0.04, allCompanies)
+saveLabels(locationsClusters, allCompanies)
+saveFakeIndexes(allCompanies)
+
 
 # Sponsor Companies
 buildFileTree('sponsor', sponsorCompanies, dwLogo=True, dwImg=True)
@@ -48,4 +57,6 @@ buildFileTree('plus', plusCompanies, dwLogo=True, dwImg=False)
 buildPlusTree(3, plusCompanies, plusStartIndex)
 
 # Sponsor Companies
-buildBaseTree(3, baseCompanies, baseStartIndex)
+buildFileTree('base', baseCompanies, dwLogo=True, dwImg=False)
+
+buildBaseTree(4, baseCompanies, baseStartIndex)

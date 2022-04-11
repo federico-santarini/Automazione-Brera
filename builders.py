@@ -21,11 +21,6 @@ import sharedValues
 importlib.reload(sharedValues)
 from sharedValues import PROJECT_FOLDER
 
-#import importlib
-#import IndesignXML
-#importlib.reload(IndesignXML)
-#from IndesignXML import Publication
-
 from os.path import exists, basename, splitext
 from os import mkdir, rename
 from shutil import copy
@@ -53,7 +48,7 @@ def buildFileTree(name, companies, dwLogo=True, dwImg=True):
     for eachCompany in companies:
         thisID = eachCompany['id']
         title = eachCompany['titolo']['it']
-        thisID_path = '/'.join([fileTreeFolder, f'{thisID:#03d}_{title[:16]}'])
+        thisID_path = '/'.join([fileTreeFolder, f'{thisID:#03d}_{title[:15]}'])
         sensitiveCreateFolder(thisID_path)
 
         # logo
@@ -161,8 +156,10 @@ def buildBaseTree(N, companies, startIndex):
 
         # Append company data to companies list
         companiesList.append(company)
-    df = paginate(N, companiesList)
-    df.to_csv(PROJECT_FOLDER + '/test_base_tree.csv', index_label='Pagina', encoding='utf-16')
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'baseCompanies.csv'])
+    paginate(N, companiesList).to_csv(fileName, index_label='Pagina', encoding='utf-16')
+
+    #df
     
 def buildPlusTree(N, companies, startIndex):
     companiesList = []
@@ -239,9 +236,8 @@ def buildPlusTree(N, companies, startIndex):
         # Append company data to companies list
         companiesList.append(company)
     
-    df = paginate(N, companiesList)
-    df.to_csv(PROJECT_FOLDER + '/test_plus_tree.csv', index_label='Pagina', encoding='utf-16')
-
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'plusCompanies.csv'])
+    paginate(N, companiesList).to_csv(fileName, index_label='Pagina', encoding='utf-16')
 
 def buildSponsorTree(N, companies, startIndex):
     companiesList = []
@@ -338,5 +334,5 @@ def buildSponsorTree(N, companies, startIndex):
 
         # Append company data to companies list
         companiesList.append(company)
-    df = paginate(N, companiesList)
-    df.to_csv(PROJECT_FOLDER + '/test_sporsor_tree.csv', index_label='Pagina', encoding='utf-16')
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'sponsorCompanies.csv'])
+    paginate(N, companiesList).to_csv(fileName, index_label='Pagina', encoding='utf-16')
