@@ -4,6 +4,23 @@
 # --------------------- #
 # Design Week Catalogue #
 # --------------------- #
+SEP = '\n' + '|'*60
+
+print(SEP)
+print('\nHAI COPIATO LA CARTELLA? [y/n]')
+Q = input()
+if Q == 'n':
+    print('\nnWARNING: per continuare devi prima copiare la cartella.\nIl programma ora si fermerà')
+    exit()
+
+print(SEP)
+print('\nHAI MODIFICATO IL FILE SHAREDVALUES.PY? [y/n]')
+Q = input()
+if Q == 'n':
+    print('\nnWARNING: Per continuare devi prima modificare la cartella.\nIl programma ora si fermerà')
+    exit()
+
+print('Importo librerie...')
 
 ### Modules
 # std library
@@ -26,9 +43,9 @@ import utils
 importlib.reload(utils)
 from utils import clusterize
 
-import generateMapLocations
-importlib.reload(generateMapLocations)
-from generateMapLocations import generateLocations
+# import generateMapLocations
+# importlib.reload(generateMapLocations)
+# from generateMapLocations import generateLocations
 
 # locals
 from sharedValues import JSON_PATH
@@ -50,23 +67,6 @@ answers = {
 }
 
 pagination = {}
-
-
-SEP = '\n' + '|'*60
-
-print(SEP)
-print('\nHAI COPIATO LA CARTELLA? [y/n]')
-Q = input()
-if Q == 'n':
-    print('\nnWARNING: per continuare devi prima copiare la cartella.\nIl programma ora si fermerà')
-    exit()
-
-print(SEP)
-print('\nHAI MODIFICATO IL FILE SHAREDVALUES.PY? [y/n]')
-Q = input()
-if Q == 'n':
-    print('\nnWARNING: Per continuare devi prima modificare la cartella.\nIl programma ora si fermerà')
-    exit()
 
 print(SEP)
 print('\nCOSA VUOI GENERARE?')
@@ -144,7 +144,7 @@ if Q == 'B':
     
     saveLabels(locationsClusters, allCompanies)
     saveFakeIndexes(allCompanies)
-    generateLocations()
+    #generateLocations()
     print(SEP)
     print('GENERAZIONE MAPPA IN CORSO...')
 
