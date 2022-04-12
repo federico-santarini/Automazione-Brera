@@ -41,6 +41,13 @@ Il file di setup serve a direzionare il programma alla giusta cartella di proget
 3. Modifica il campo `JSON FILE` con il nome del file json contenente i dati grezzi.
 4. Salva ed esci.
 
+### 1.3 Installa pipenv
+
+pipenv (https://pypi.org/project/pipenv/) è uno strumento che permette di creare un ambiente di sviluppo (virtual environment) chiuso per un progetto python. Il software utilizza un virtual environment per installare tutte le librerie e dipendenze nesessarie per la generazione dei files.
+
+1. Apri il terminale (nella cartella Applicazioni/Utility)
+2. Copia il seguente comando e premi invio: `sudo apt install pipenv`
+
 ## 2. Generazione Files
 ### 2.1 Apri il terminale
 Nel Finder, apri la cartella /Applicazioni/Utility, quindi fai doppio clic su Terminale.
@@ -51,7 +58,7 @@ Nel Finder, apri la cartella /Applicazioni/Utility, quindi fai doppio clic su Te
 ### 2.3 Attiva environment
 Un Virtual environment è uno strumento che permette di creare un ambiente di sviluppo chiuso per un projetto python. Il softwar utilizza un virtual environment per installare tutte le librerie e dipendenze nesessarie per generare i files.
 
-1. Attiva il virtual environment copiando il seguente comando sul terminale: `source venv/bin/activate`
+1. Attiva il virtual environment copiando il seguente comando sul terminale: `pipenv install && pipenv shell`
 
 ### 2.4 Avvia il software
 1. Avvia il software copiando il seguente comando sul terminale: `python guideManager.py`
