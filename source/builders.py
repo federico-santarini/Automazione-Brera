@@ -94,7 +94,7 @@ def buildBaseTree(N, companies, startIndex):
         startIndex +=1
 
         # Espositori (nome)
-        exhibitors = [eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']]
+        exhibitors = sorted([eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']], key=str.casefold)
         company[pageElement + 'Espositori'] = ', '.join(exhibitors)
 
         # Location (nome)
