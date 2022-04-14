@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 pandas = "*"
 scikit-learn = "*"
+drawbot = {editable = true, ref = "master", git = "https://github.com/typemytype/drawbot.git"}
 
 [dev-packages]
 
