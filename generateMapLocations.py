@@ -9,6 +9,7 @@
 # std library
 import json
 import csv
+from json.tool import main
 from os.path import exists
 
 # dependencies
@@ -307,3 +308,6 @@ def generateLocations():
     dB.saveImage('/'.join([OUTPUT_FOLDER, 'locations.pdf']))
     dB.endDrawing()
     saveLabels(LABELS_PATH, labels, tableKeys)
+
+if __name__ == "__main__":
+    generateLocations()

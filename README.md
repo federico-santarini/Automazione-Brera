@@ -45,7 +45,7 @@ Il file di setup serve a direzionare il programma alla giusta cartella di proget
 ### 2.1 Apri il terminale
 Nel Finder, apri la cartella /Applicazioni/Utility, quindi fai doppio clic su Terminale.
 ### 2.2 cambia la working directory
-1. digita `cd percorso/alla/cartella/software` nel terminale, sostituendo *percorso/alla/cartella/software* con il percorso alla cartella *source* (su mac puoi ottenere il percorso di una cartella selezionandola e premento `alt+cmd+c`).
+1. digita `cd percorso/alla/cartella/source` nel terminale, sostituendo *percorso/alla/cartella/source* con il percorso alla cartella *source* (su mac puoi ottenere il percorso di una cartella selezionandola e premento `alt+cmd+c`).
 2. Alternativamente esegui un drag and drop della cartella *source* sull'icona del terminale nel dock.
 
 ### 2.3 Attiva environment
