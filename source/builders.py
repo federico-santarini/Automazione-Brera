@@ -21,7 +21,7 @@ import sharedValues
 importlib.reload(sharedValues)
 from sharedValues import PROJECT_FOLDER
 
-from os.path import exists, basename, splitext
+from os.path import exists, basename, splitext, abspath
 from os import mkdir, rename
 from shutil import copy
 from urllib.request import urlretrieve
@@ -49,7 +49,8 @@ def buildFileTree(name, companies, dwLogo=True, dwImg=True):
     for eachCompany in companies:
         thisID = eachCompany['id']
         title = eachCompany['titolo']['it']
-        thisID_path = '/'.join([fileTreeFolder, f'{thisID:#03d}_{title[:15]}'])
+        #thisID_path = '/'.join([fileTreeFolder, f'{thisID:#03d}_{title[:15]}'])
+        thisID_path = fileTreeFolder
         sensitiveCreateFolder(thisID_path)
 
         # logo
@@ -152,7 +153,7 @@ def buildBaseTree(companies):
         logoName = basename(eachCompany['logo_azienda_file'])
         if logoName != '':
             logoPath = companyFolder + '/' + logoName
-            company['@' + 'logotype'] = logoPath
+            company['@' + 'logotype'] = logoName #logoPath
         else:
             company['@' + 'logotype'] = ''
 
@@ -221,7 +222,7 @@ def paginateBaseCompanies(companies, startIndex, N):
         # Append company data to companies list
         companiesList.append(company)
     
-    fileName = '/'.join([PROJECT_FOLDER, 'build', 'baseCompanies_datamerge.csv'])
+    fileName = '/'.join([PROJECT_FOLDER, 'build','base', 'baseCompanies_datamerge.csv'])
     paginate(N, companiesList).to_csv(fileName, index=False, encoding='utf-16')
 
 # Plus Companies
@@ -284,13 +285,14 @@ def buildPlusTree(companies):
         company['Esposizione'] = ' '.join(mainEventDatesTimes)
         
         # Logotype (file)
-        companyFolder = '/'.join(['/build', 'plus', f"{eachCompany['id']:#03d}_{titolo[:16]}"])
+        # Macintosh HD:Users:federico:CloudStation:Federico:_ Lavori:Automazione Brera:project_folder:build:plus:730_Riflessioni Int:LogoL_L_NER
+        
         logoName = basename(eachCompany['logo_azienda_file'])
         if logoName != '':
-            logoPath = companyFolder + '/' + logoName
-            company['@' + 'logotype'] = logoPath
+            logoPath = '/'.join([f"{eachCompany['id']:#03d}_{titolo[:16]}",logoName])
+            company['@' + 'logotype'] = logoName #logoPath
         else:
-            company['@' + 'logotype'] = ''
+            company['@' + 'logotype'] = 'placeholder.png'
                 
         # Append company data to companies list
         companiesList.append(company)
@@ -356,7 +358,7 @@ def paginatePlusCompanies(companies, startIndex, N):
         # Append company data to companies list
         companiesList.append(company)
     
-    fileName = '/'.join([PROJECT_FOLDER, 'build', 'PlusCompanies_datamerge.csv'])
+    fileName = '/'.join([PROJECT_FOLDER, 'build','plus', 'PlusCompanies_datamerge.csv'])
     paginate(N, companiesList).to_csv(fileName, index=False, encoding='utf-16')
 
 # Sponsor Companies
@@ -435,7 +437,7 @@ def buildSponsorTree(companies):
 
         if logoName != '':
             logoPath = companyFolder + '/' + logoName
-            company['@' + 'logotype'] = logoPath
+            company['@' + 'logotype'] = logoName #logoPath
         else:
             company['@' + 'logotype'] = ''
             
@@ -443,7 +445,7 @@ def buildSponsorTree(companies):
         printImage = basename(eachCompany['immagine_stampa'])
         if printImage != '':
             printImagePath = companyFolder + '/' + printImage
-            company['@' + 'Immagine stampa'] = printImagePath
+            company['@' + 'Immagine stampa'] = printImage #printImagePath
         else:
             company['@' + 'Immagine stampa'] = ''
 
@@ -524,6 +526,6 @@ def paginateSponsorCompanies(companies, startIndex, N):
         # Append company data to companies list
         companiesList.append(company)
     
-    fileName = '/'.join([PROJECT_FOLDER, 'build', 'SponsorCompanies_datamerge.csv'])
+    fileName = '/'.join([PROJECT_FOLDER, 'build','sponsor', 'SponsorCompanies_datamerge.csv'])
     paginate(N, companiesList).to_csv(fileName, index=False, encoding='utf-16')
 

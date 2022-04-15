@@ -4,7 +4,15 @@
 %BeginFont
 Handler:DirectoryHandler
 FontType:Invalid
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/AdobeFnt20.lst
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/AdobeFnt19.lst
+FileLength:4879
+FileModTime:671382015
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/AdobeFnt20.lst
 FileLength:5761
 FileModTime:669222000
 %EndFont
@@ -12,9 +20,9 @@ FileModTime:669222000
 %BeginFont
 Handler:DirectoryHandler
 FontType:Invalid
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/AdobeFnt21.lst
-FileLength:6311
-FileModTime:670174064
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/AdobeFnt21.lst
+FileLength:6253
+FileModTime:671705569
 %EndFont
 
 %BeginFont
@@ -30,7 +38,7 @@ WidthClass:5
 AngleClass:0
 FullName:Minion Pro
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/MinionPro-Regular.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/MinionPro-Regular.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
@@ -56,7 +64,7 @@ WidthClass:5
 AngleClass:0
 FullName:Suisse BP Int'l Regular
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/Suisse BP Int'l Regular.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/Suisse BP Int'l Regular.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
@@ -82,7 +90,7 @@ WidthClass:5
 AngleClass:0
 FullName:Suisse Int'l Bold
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/SuisseIntl-Bold.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/SuisseIntl-Bold.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
@@ -108,7 +116,7 @@ WidthClass:5
 AngleClass:0
 FullName:Suisse Int'l Book
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/SuisseIntl-Book.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/SuisseIntl-Book.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
@@ -134,7 +142,7 @@ WidthClass:5
 AngleClass:0
 FullName:Suisse Int'l
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/SuisseIntl-Regular.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/SuisseIntl-Regular.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
@@ -160,7 +168,7 @@ WidthClass:5
 AngleClass:0
 FullName:Suisse Int'l Semi Bold
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/SuisseIntl-SemiBold.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/SuisseIntl-SemiBold.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
@@ -186,7 +194,7 @@ WidthClass:5
 AngleClass:0
 FullName:Suisse Int'l Mono Bold
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/SuisseIntlMono-Bold.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/SuisseIntlMono-Bold.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
@@ -212,7 +220,7 @@ WidthClass:5
 AngleClass:0
 FullName:Suisse Int'l Mono
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/SuisseIntlMono-Regular.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/SuisseIntlMono-Regular.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
@@ -237,7 +245,7 @@ WidthClass:5
 AngleClass:0
 FullName:Suisse Works Bold
 WritingScript:Roman
-OutlineFileName:/Users/federico/CloudStation/Federico/_ Lavori/Automazione Brera/template-guida-nuovi Folder/Document fonts/SuisseWorks-Bold.otf
+OutlineFileName:/Users/federico/Documents/GitHub/Automazione-Brera/templates/Layout/Document fonts/SuisseWorks-Bold.otf
 DataFormat:sfntData
 UsesStandardEncoding:yes
 isCFF:yes
