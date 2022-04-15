@@ -26,7 +26,6 @@ def loadCompanies(jsonPath):
 
     sponsorCompanies = [cc for cc in data
                         if cc['pacchetto_comunicazione'] == 'sponsor']
-    
     allCompanies = sponsorCompanies + plusCompanies + baseCompanies
 
     return allCompanies, baseCompanies, plusCompanies, sponsorCompanies

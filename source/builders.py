@@ -26,7 +26,8 @@ from os import mkdir, rename
 from shutil import copy
 from urllib.request import urlretrieve
 
-
+import pandas as pd
+import time
 ### Constants
 MONTHS = ('gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
           'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre')
@@ -54,6 +55,7 @@ def buildFileTree(name, companies, dwLogo=True, dwImg=True):
         # logo
         if dwLogo is True:
             logoURL = eachCompany['logo_azienda_file']
+
             if thisID not in exceptions or (thisID in exceptions and 'logo_azienda_file' not in exceptions[thisID]):
                 try:
                     logoPath = '/'.join([thisID_path, basename(logoURL)])
@@ -78,40 +80,42 @@ def buildFileTree(name, companies, dwLogo=True, dwImg=True):
 
         saveExceptions(exceptions)
 
-def buildBaseTree(N, companies, startIndex):
+# Base Companies
+def buildBaseTree(companies):
+    '''
+    Funzione per esportare csv di controllo per le base company.
+    Il csv esportato può essere riordinato a piacere e utilizzato 
+    come input nella funzione paginateBaseCompanies() per renderlo
+    digeribile da inDesign.
+    '''
     companiesList = []
-    
+
     for indexCompany, eachCompany in enumerate(companies):
         company = {}
-        pageElement = f'{indexCompany%N+1:#02d} '
 
         # Titolo
         titolo = eachCompany['titolo']['it']
-        company[pageElement + 'Titolo'] = titolo
-
-        # Index sequenziale
-        company[pageElement + 'Index sequenziale'] = f'{startIndex:#02d}'
-        startIndex +=1
+        company['Titolo'] = titolo
 
         # Espositori (nome)
         exhibitors = sorted([eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']], key=str.casefold)
-        company[pageElement + 'Espositori'] = ', '.join(exhibitors)
+        company['Espositori'] = ', '.join(exhibitors)
 
         # Location (nome)
         locationName = eachCompany['location']['nome']
-        company[pageElement + 'Nome Location'] = locationName
+        company['Nome Location'] = locationName
 
         # Location (indirizzo)
         locationAddress = eachCompany['location']['indirizzo']
-        company[pageElement + 'Indirizzo Location'] = locationAddress
+        company['Indirizzo Location'] = locationAddress
 
         # Descrizione 110 ita
         desIt = eachCompany['descrizione_110']['it'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
-        company[pageElement + 'Descrizione 110 ita'] = desIt
+        company['Descrizione 110 ita'] = desIt
 
         # Descrizione 110 eng
         desEn = eachCompany['descrizione_110']['en'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
-        company[pageElement + 'Descrizione 110 eng'] = desEn
+        company['Descrizione 110 eng'] = desEn
 
         # Mini eventi (attività, data, ora inizio/fine)
         nonExhibitionLenght = len([ev for ev in eachCompany['mini-eventi'] if ev['tipo_attivita']!='esposizione'])
@@ -129,7 +133,7 @@ def buildBaseTree(N, companies, startIndex):
                         timespan = f'{timespan} |'
                     nonExhibitionCounter += 1
                     secondaryEventDatesTimes.append(f'{kindRepr} {days} {month} {timespan}')
-        company[pageElement + 'mini-eventi'] = ' '.join(secondaryEventDatesTimes)
+        company['mini-eventi'] = ' '.join(secondaryEventDatesTimes)
         
         # Esposizione (date, orari inizio/fine)
         exhibitions = [ev for ev in eachCompany['mini-eventi'] if ev['tipo_attivita']=='esposizione']
@@ -137,64 +141,119 @@ def buildBaseTree(N, companies, startIndex):
         for timespan, dates in groupSameDateAndTime(exhibitions).items():
             days = '/'.join([f'{dd.day:#02d}' for dd in dates])
             month = MONTHS[dates[0].month-1]
-            if nonExhibition and N == 4:
-                timespan = f'{timespan} |'
+            # if nonExhibition and N == 4:
+            #     timespan = f'{timespan} |'
             mainEventDatesTimes.append(f'{days} {month} {timespan}')
 
-        company[pageElement + 'Esposizione'] = ' '.join(mainEventDatesTimes)
+        company['Esposizione'] = ' '.join(mainEventDatesTimes)
         
         # Logotype (file)
         companyFolder = '/'.join(['/build', 'base', f"{eachCompany['id']:#03d}_{titolo[:16]}"])
         logoName = basename(eachCompany['logo_azienda_file'])
         if logoName != '':
             logoPath = companyFolder + '/' + logoName
-            company['@' + pageElement + 'logotype'] = logoPath
+            company['@' + 'logotype'] = logoPath
         else:
-            company['@' + pageElement + 'logotype'] = ''
+            company['@' + 'logotype'] = ''
 
-
-
-        # Append company data to companies list
+        # Append company dict data to companies list
         companiesList.append(company)
-    fileName = '/'.join([PROJECT_FOLDER, 'build', 'baseCompanies.csv'])
-    paginate(N, companiesList).to_csv(fileName, index_label='Pagina', encoding='utf-16')
-
-    #df
     
-def buildPlusTree(N, companies, startIndex):
+    # sort companies based on Espositori
+    companiesList = sorted(companiesList, key=lambda d: d['Espositori'])
+    
+    # Export csv. IMPORTANT: Indesign requires encoding='utf-16'
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'baseCompanies_controllo.csv'])
+    pd.DataFrame(companiesList).to_csv(fileName, index=False, encoding='utf-16')
+
+def paginateBaseCompanies(companies, startIndex, N):
     companiesList = []
 
     for indexCompany, eachCompany in enumerate(companies):
         company = {}
+
+        #  Page element flag
         pageElement = f'{indexCompany%N+1:#02d} '
 
         # Titolo
-        titolo = eachCompany['titolo']['it']
+        titolo = eachCompany['Titolo']
         company[pageElement + 'Titolo'] = titolo
 
-        # Index sequenziale
+        # Index sequenziale (da creare solo se datamerge=True)
         company[pageElement + 'Index sequenziale'] = f'{startIndex:#02d}'
         startIndex +=1
 
         # Espositori (nome)
-        exhibitors = [eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']]
-        company[pageElement + 'Espositori'] = ', '.join(exhibitors)
+        espositori = eachCompany['Espositori']
+        company[pageElement + 'Espositori'] = espositori
 
         # Location (nome)
-        locationName = eachCompany['location']['nome']
-        company[pageElement + 'Nome Location'] = locationName
+        locName = eachCompany['Nome Location']
+        company[pageElement + 'Nome Location'] = locName
 
         # Location (indirizzo)
-        locationAddress = eachCompany['location']['indirizzo']
-        company[pageElement + 'Indirizzo Location'] = locationAddress
+        locAddress = eachCompany['Indirizzo Location']
+        company[pageElement + 'Indirizzo Location'] = locAddress
 
         # Descrizione 110 ita
-        desIt = eachCompany['descrizione_110']['it'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
+        desIt = eachCompany['Descrizione 110 ita']
         company[pageElement + 'Descrizione 110 ita'] = desIt
 
         # Descrizione 110 eng
-        desEn = eachCompany['descrizione_110']['en'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
+        desEn = eachCompany['Descrizione 110 eng']
         company[pageElement + 'Descrizione 110 eng'] = desEn
+
+        # Mini eventi (attività, data, ora inizio/fine)
+        miniEv = eachCompany['mini-eventi']
+        company[pageElement + 'mini-eventi'] = miniEv
+        
+        # Esposizione (date, orari inizio/fine)
+        esposizione = eachCompany['Esposizione']
+        if esposizione != '' and miniEv != '' and N==4:
+            esposizione = eachCompany['Esposizione'] + ' |'       
+        company[pageElement + 'Esposizione'] = esposizione
+
+
+        # Logotype (file)
+        logo = eachCompany['@logotype']
+        company['@' + pageElement + 'logotype'] = logo
+
+        # Append company data to companies list
+        companiesList.append(company)
+    
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'baseCompanies_datamerge.csv'])
+    paginate(N, companiesList).to_csv(fileName, index=False, encoding='utf-16')
+
+# Plus Companies
+def buildPlusTree(companies):
+    companiesList = []
+
+    for indexCompany, eachCompany in enumerate(companies):
+        company = {}
+
+        # Titolo
+        titolo = eachCompany['titolo']['it']
+        company['Titolo'] = titolo
+
+        # Espositori (nome)
+        exhibitors = sorted([eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']], key=str.casefold)
+        company['Espositori'] = ', '.join(exhibitors)
+
+        # Location (nome)
+        locationName = eachCompany['location']['nome']
+        company['Nome Location'] = locationName
+
+        # Location (indirizzo)
+        locationAddress = eachCompany['location']['indirizzo']
+        company['Indirizzo Location'] = locationAddress
+
+        # Descrizione 110 ita
+        desIt = eachCompany['descrizione_110']['it'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
+        company['Descrizione 110 ita'] = desIt
+
+        # Descrizione 110 eng
+        desEn = eachCompany['descrizione_110']['en'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
+        company['Descrizione 110 eng'] = desEn
 
         # Mini eventi (attività, data, ora inizio/fine)
         nonExhibitionLenght = len([ev for ev in eachCompany['mini-eventi'] if ev['tipo_attivita']!='esposizione'])
@@ -212,7 +271,7 @@ def buildPlusTree(N, companies, startIndex):
                         timespan = f'{timespan} |'
                     nonExhibitionCounter += 1
                     secondaryEventDatesTimes.append(f'{kindRepr} {days} {month} {timespan}')
-        company[pageElement + 'mini-eventi'] = ' '.join(secondaryEventDatesTimes)
+        company['mini-eventi'] = ' '.join(secondaryEventDatesTimes)
 
         # Esposizione (date, orari inizio/fine)
         exhibitions = [ev for ev in eachCompany['mini-eventi'] if ev['tipo_attivita']=='esposizione']
@@ -222,57 +281,114 @@ def buildPlusTree(N, companies, startIndex):
             month = MONTHS[dates[0].month-1]
             mainEventDatesTimes.append(f'{days} {month} {timespan}')
 
-        company[pageElement + 'Esposizione'] = ' '.join(mainEventDatesTimes)
+        company['Esposizione'] = ' '.join(mainEventDatesTimes)
         
         # Logotype (file)
         companyFolder = '/'.join(['/build', 'plus', f"{eachCompany['id']:#03d}_{titolo[:16]}"])
         logoName = basename(eachCompany['logo_azienda_file'])
         if logoName != '':
             logoPath = companyFolder + '/' + logoName
-            company['@' + pageElement + 'logotype'] = logoPath
+            company['@' + 'logotype'] = logoPath
         else:
-            company['@' + pageElement + 'logotype'] = ''
+            company['@' + 'logotype'] = ''
                 
         # Append company data to companies list
         companiesList.append(company)
     
-    fileName = '/'.join([PROJECT_FOLDER, 'build', 'plusCompanies.csv'])
-    paginate(N, companiesList).to_csv(fileName, index_label='Pagina', encoding='utf-16')
+    # sort companies based on Espositori
+    companiesList = sorted(companiesList, key=lambda d: d['Espositori'])
+    
+    # Export csv. IMPORTANT: Indesign requires encoding='utf-16'
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'PlusCompanies_controllo.csv'])
+    pd.DataFrame(companiesList).to_csv(fileName, index=False, encoding='utf-16')
 
-def buildSponsorTree(N, companies, startIndex):
+def paginatePlusCompanies(companies, startIndex, N):
     companiesList = []
 
     for indexCompany, eachCompany in enumerate(companies):
         company = {}
+
+        #  Page element flag
         pageElement = f'{indexCompany%N+1:#02d} '
 
         # Titolo
-        titolo = eachCompany['titolo']['it']
+        titolo = eachCompany['Titolo']
         company[pageElement + 'Titolo'] = titolo
 
-        # Index sequenziale
+        # Index sequenziale (da creare solo se datamerge=True)
         company[pageElement + 'Index sequenziale'] = f'{startIndex:#02d}'
         startIndex +=1
 
         # Espositori (nome)
-        exhibitors = [eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']]
-        company[pageElement + 'Espositori'] = ', '.join(exhibitors)
+        espositori = eachCompany['Espositori']
+        company[pageElement + 'Espositori'] = espositori
+
+        # Location (nome)
+        locName = eachCompany['Nome Location']
+        company[pageElement + 'Nome Location'] = locName
+
+        # Location (indirizzo)
+        locAddress = eachCompany['Indirizzo Location']
+        company[pageElement + 'Indirizzo Location'] = locAddress
+
+        # Descrizione 110 ita
+        desIt = eachCompany['Descrizione 110 ita']
+        company[pageElement + 'Descrizione 110 ita'] = desIt
+
+        # Descrizione 110 eng
+        desEn = eachCompany['Descrizione 110 eng']
+        company[pageElement + 'Descrizione 110 eng'] = desEn
+
+        # Mini eventi (attività, data, ora inizio/fine)
+        miniEv = eachCompany['mini-eventi']
+        company[pageElement + 'mini-eventi'] = miniEv
+        
+        # Esposizione (date, orari inizio/fine)
+        esposizione = eachCompany['Esposizione']
+        if esposizione != '' and miniEv != '' and N==4:
+            esposizione = eachCompany['Esposizione'] + ' |'       
+        company[pageElement + 'Esposizione'] = esposizione
+        
+        # Logotype (file)
+        logo = eachCompany['@logotype']
+        company['@' + pageElement + 'logotype'] = logo
+
+        # Append company data to companies list
+        companiesList.append(company)
+    
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'PlusCompanies_datamerge.csv'])
+    paginate(N, companiesList).to_csv(fileName, index=False, encoding='utf-16')
+
+# Sponsor Companies
+def buildSponsorTree(companies):
+    companiesList = []
+
+    for indexCompany, eachCompany in enumerate(companies):
+        company = {}
+
+        # Titolo
+        titolo = eachCompany['titolo']['it']
+        company['Titolo'] = titolo
+
+        # Espositori (nome)
+        exhibitors = sorted([eachExhibitor['nome'] for eachExhibitor in eachCompany['espositori']], key=str.casefold)
+        company['Espositori'] = ', '.join(exhibitors)
 
         # Location (nome)
         locationName = eachCompany['location']['nome']
-        company[pageElement + 'Nome Location'] = locationName
+        company['Nome Location'] = locationName
 
         # Location (indirizzo)
         locationAddress = eachCompany['location']['indirizzo']
-        company[pageElement + 'Indirizzo Location'] = locationAddress
+        company['Indirizzo Location'] = locationAddress
 
         # Descrizione 380 ita
         desIt = eachCompany['descrizione_380']['it'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
-        company[pageElement + 'Descrizione 380 ita'] = desIt
+        company['Descrizione 380 ita'] = desIt
 
         # Descrizione 380 eng
         desEn = eachCompany['descrizione_380']['en'].replace('\n', ' ').replace('\r', '')#.replace('\n', ' ')
-        company[pageElement + 'Descrizione 380 eng'] = desEn
+        company['Descrizione 380 eng'] = desEn
 
         # Mini eventi (attività, data, ora inizio/fine)
         nonExhibitionLenght = len([ev for ev in eachCompany['mini-eventi'] if ev['tipo_attivita']!='esposizione'])
@@ -290,7 +406,7 @@ def buildSponsorTree(N, companies, startIndex):
                         timespan = f'{timespan} |'
                     nonExhibitionCounter += 1
                     secondaryEventDatesTimes.append(f'{kindRepr} {days} {month} {timespan}')
-        company[pageElement + 'mini-eventi'] = ' '.join(secondaryEventDatesTimes)
+        company['mini-eventi'] = ' '.join(secondaryEventDatesTimes)
 
         # Esposizione (date, orari inizio/fine)
         exhibitions = [ev for ev in eachCompany['mini-eventi'] if ev['tipo_attivita']=='esposizione']
@@ -298,41 +414,116 @@ def buildSponsorTree(N, companies, startIndex):
         for timespan, dates in groupSameDateAndTime(exhibitions).items():
             days = '/'.join([f'{dd.day:#02d}' for dd in dates])
             month = MONTHS[dates[0].month-1]
-            if nonExhibition and N == 4:
-                timespan = f'{timespan} |'
+            # if nonExhibition and N == 4:
+            #     timespan = f'{timespan} |'
             mainEventDatesTimes.append(f'{days} {month} {timespan}')
 
-        company[pageElement + 'Esposizione'] = ' '.join(mainEventDatesTimes)
+        company['Esposizione'] = ' '.join(mainEventDatesTimes)
         
         companyFolder = '/'.join(['/build', 'plus', f"{eachCompany['id']:#03d}_{titolo[:16]}"])
         
         # Mail
         email = eachCompany['email']
-        company[pageElement + 'Email'] = email
+        company['Email'] = email
         
         # Sito Web
         website = eachCompany['sito_web']
-        company[pageElement + 'website'] = website
+        company['website'] = website
 
         # Logotype (file)
         logoName = basename(eachCompany['logo_azienda_file'])
 
         if logoName != '':
             logoPath = companyFolder + '/' + logoName
-            company['@' + pageElement + 'logotype'] = logoPath
+            company['@' + 'logotype'] = logoPath
         else:
-            company['@' + pageElement + 'logotype'] = ''
+            company['@' + 'logotype'] = ''
             
         # Print image (file)
         printImage = basename(eachCompany['immagine_stampa'])
         if printImage != '':
             printImagePath = companyFolder + '/' + printImage
-            company['@' + pageElement + 'Immagine stampa'] = printImagePath
+            company['@' + 'Immagine stampa'] = printImagePath
         else:
-            company['@' + pageElement + 'Immagine stampa'] = ''
+            company['@' + 'Immagine stampa'] = ''
 
 
         # Append company data to companies list
         companiesList.append(company)
-    fileName = '/'.join([PROJECT_FOLDER, 'build', 'sponsorCompanies.csv'])
-    paginate(N, companiesList).to_csv(fileName, index_label='Pagina', encoding='utf-16')
+    
+    # sort companies based on Espositori
+    companiesList = sorted(companiesList, key=lambda d: d['Espositori'])
+    
+    # Export csv. IMPORTANT: Indesign requires encoding='utf-16'
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'SponsorCompanies_controllo.csv'])
+    pd.DataFrame(companiesList).to_csv(fileName, index=False, encoding='utf-16')
+
+def paginateSponsorCompanies(companies, startIndex, N):
+    companiesList = []
+
+    for indexCompany, eachCompany in enumerate(companies):
+        company = {}
+
+        #  Page element flag
+        pageElement = f'{indexCompany%N+1:#02d} '
+
+        # Titolo
+        titolo = eachCompany['Titolo']
+        company[pageElement + 'Titolo'] = titolo
+
+        # Index sequenziale (da creare solo se datamerge=True)
+        company[pageElement + 'Index sequenziale'] = f'{startIndex:#02d}'
+        startIndex +=1
+
+        # Espositori (nome)
+        espositori = eachCompany['Espositori']
+        company[pageElement + 'Espositori'] = espositori
+
+        # Location (nome)
+        locName = eachCompany['Nome Location']
+        company[pageElement + 'Nome Location'] = locName
+
+        # Location (indirizzo)
+        locAddress = eachCompany['Indirizzo Location']
+        company[pageElement + 'Indirizzo Location'] = locAddress
+
+        # Descrizione 380 ita
+        desIt = eachCompany['Descrizione 380 ita']
+        company[pageElement + 'Descrizione 380 ita'] = desIt
+
+        # Descrizione 380 eng
+        desEn = eachCompany['Descrizione 380 eng']
+        company[pageElement + 'Descrizione 380 eng'] = desEn
+
+        # Mini eventi (attività, data, ora inizio/fine)
+        miniEv = eachCompany['mini-eventi']
+        company[pageElement + 'mini-eventi'] = miniEv
+        
+        # Esposizione (date, orari inizio/fine)
+        esposizione = eachCompany['Esposizione']
+        if esposizione != '' and miniEv != '' and N==4:
+            esposizione = eachCompany['Esposizione'] + ' |'       
+        company[pageElement + 'Esposizione'] = esposizione
+        
+        # Email
+        mail = eachCompany['Email']
+        company[pageElement + 'Email'] = mail
+
+        # Website
+        website = eachCompany['website']
+        company[pageElement + 'website'] = website
+
+        # Logotype (file)
+        logo = eachCompany['@logotype']
+        company['@' + pageElement + 'logotype'] = logo
+
+        # Immagine Stampa (file)
+        imgStampa = eachCompany['@Immagine stampa']
+        company['@' + pageElement + 'Immagine stampa'] = imgStampa
+
+        # Append company data to companies list
+        companiesList.append(company)
+    
+    fileName = '/'.join([PROJECT_FOLDER, 'build', 'SponsorCompanies_datamerge.csv'])
+    paginate(N, companiesList).to_csv(fileName, index=False, encoding='utf-16')
+
