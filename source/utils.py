@@ -156,3 +156,13 @@ def clusterize(km, companies):
     # sort clusters
     clusters.sort()
     return clusters
+
+import importlib
+import sharedValues
+importlib.reload(sharedValues)
+from sharedValues import PROJECT_FOLDER
+
+def csvConverter(fileName):
+    filepath = '/'.join([PROJECT_FOLDER,'build',fileName])
+    listOfDict = pd.read_csv(filepath, encoding='utf-16').fillna('').to_dict('records')
+    return listOfDict
