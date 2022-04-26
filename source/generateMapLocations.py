@@ -25,8 +25,11 @@ IDS_PATH = '/'.join([PROJECT_FOLDER, 'build', 'map', 'fakeIDs.csv'])
 FROM_MM_TO_PT = 2.8346472
 FORMAT = 297*FROM_MM_TO_PT, 420*FROM_MM_TO_PT
 
-CORNER_TOPLFT = {'latitude': 45.484605, 'longitude': 9.178335}
-CORNER_BTMRGT = {'latitude': 45.465383, 'longitude': 9.197558}
+#CORNER_TOPLFT = {'latitude': 45.484605, 'longitude': 9.178335}
+#CORNER_BTMRGT = {'latitude': 45.465383, 'longitude': 9.197558}
+CORNER_TOPLFT = {'latitude': 45.484485, 'longitude': 9.177816}
+CORNER_BTMRGT = {'latitude': 45.464206, 'longitude': 9.197443}
+
 
 POSITIONS = {'topLft': (+1, -1),
              'topRgt': (-1, -1),
