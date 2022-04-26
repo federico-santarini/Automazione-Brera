@@ -72,7 +72,7 @@ if Q1 == 'A':
     if W == 'y':
         buildFileTree('sponsor', sponsorCompanies, dwLogo=True, dwImg=True)
         buildFileTree('plus', plusCompanies, dwLogo=True, dwImg=False)
-        buildFileTree('base', baseCompanies, dwLogo=False, dwImg=False)
+        buildFileTree('base', baseCompanies, dwLogo=True, dwImg=False)
         print('\nProcesso completato con successo!\nUn report chiamato exceptions.csv è stato salvato nella cartella di progetto.')
 
     else:
