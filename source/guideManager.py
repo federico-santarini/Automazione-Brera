@@ -141,20 +141,9 @@ if Q1 == 'C':
         print('\nGenerazione file per catalogo in corso...')
 
         ### importa csv di controllo e convertilo in list of dictionaries
-        try:
-            baseCompaniesSorted = csvConverter('baseCompanies_controllo.csv')
-        except Exception as error:
-            print(error, '[WARNING]')
-        
-        try:
-            plusCompaniesSorted = csvConverter('plusCompanies_controllo.csv')
-        except Exception as error:
-            print(error, '[WARNING]')
-            
-        try:
-            sponsorCompaniesSorted = csvConverter('sponsorCompanies_controllo.csv')
-        except Exception as error:
-            print(error, '[WARNING]')
+        baseCompaniesSorted = csvConverter('baseCompanies_controllo.csv')
+        plusCompaniesSorted = csvConverter('plusCompanies_controllo.csv')
+        sponsorCompaniesSorted = csvConverter('sponsorCompanies_controllo.csv')
 
         paginateBaseCompanies(baseCompaniesSorted, baseStartIndex, N=pagination['base'])
         paginatePlusCompanies(plusCompaniesSorted,plusStartIndex,N=pagination['plus'])

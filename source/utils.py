@@ -163,6 +163,11 @@ importlib.reload(sharedValues)
 from sharedValues import PROJECT_FOLDER
 
 def csvConverter(fileName):
-    filepath = '/'.join([PROJECT_FOLDER,'build',fileName])
-    listOfDict = pd.read_csv(filepath, encoding='utf-16').fillna('').to_dict('records')
-    return listOfDict
+    emptyList = []
+    try:
+        filepath = '/'.join([PROJECT_FOLDER,'build',fileName])
+        listOfDict = pd.read_csv(filepath, encoding='utf-16').fillna('').to_dict('records')
+        return listOfDict
+    except Exception as error:
+        printError(error, f'[WARNING] Sembra che il file {fileName} sia vuoto.\nIgnorare questo warning se il relativo pacchetto comunicazione non è presente')
+        return emptyList
