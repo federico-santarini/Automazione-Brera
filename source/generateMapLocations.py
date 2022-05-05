@@ -280,6 +280,7 @@ def generateLocations():
             continue
         
         if eachID not in labels:
+            print(f'[WARNING] Location {eachID} NOT IN LABELS')
             position = 'btmRgt'
             labels[eachID] = {'position': position}
             labels[eachID]['offsetX'] = 0
@@ -295,10 +296,11 @@ def generateLocations():
     
         if labels[eachID]['link']:
             if type(labels[eachID]['link']) is not int:
+                    
                 links = [IDs[int(ii)] for ii in labels[eachID]['link'].split(' ')]
             else:
-                links = [labels[eachID]['link']]
-                
+                links = [IDs[labels[eachID]['link']]]
+
             stackWdt = labels[eachID]['stackWdt']
             drawMultipleLocations(xx, yy, fakeID, position,
                                   links, stackWdt, clr=PURPLE)

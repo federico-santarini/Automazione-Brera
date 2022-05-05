@@ -42,6 +42,7 @@ from generateMapLocations import generateLocations
 # locals
 from sharedValues import JSON_PATH
 
+import pandas as pd
 
 ### Variables
 allCompanies, baseCompanies, plusCompanies, sponsorCompanies = loadCompanies(JSON_PATH)
@@ -157,8 +158,10 @@ if Q1 == 'C':
 # Generazione mappa
 if Q1 == 'D':
     print(SEP)
-    print('\nStai generando la mappa per la prima volta o la stai editando?')
-    print('\nA: Generando per la prima volta\nB: Editando')
+    print('\nQuesta funzione genererà un pdf con le locations di ogni espositore.\n')
+    print('\n** DISCLAIMER **\nAssicurati di aver generato i file preliminari prima di generare la mappa,\naltrimenti il programma non verrà eseguito correttamente.\nUna volta generati, i files preliminari possono essere editati per generare la mappa a seconda delle necessità')
+    print('\nCosa vuoi Generare')
+    print('\nA: Files preliminari\nB: Mappa')
 
     while True:
         Q = input().upper()
@@ -168,19 +171,23 @@ if Q1 == 'D':
             print('\nWARNING: Risposta non valida')
 
     if Q == 'A':
-            while True:
-                print('\nCon quale raggio vuoi clusterizzare le locations? (esprimi in metri)')
-                clusterRadius = int(input())/1000
-                locationsClusters = clusterize(clusterRadius, allCompanies)
-                print('\nSi sono formati {} clusters,'.format(len(locationsClusters)))
-                print('vuoi procedere con la generazione della mappa? [y/n]')
-                A = input()
-                if A == 'y':
-                    break
-            saveLabels(locationsClusters, allCompanies)
-            # Invece che allCompanies qui tocca fare un merge derivato dai csv di controllo tramite csvConverter()
-            saveFakeIndexes(allCompanies)
-            generateLocations()
+        sponsorCompaniesSorted = csvConverter('sponsorCompanies_controllo.csv')
+        plusCompaniesSorted = csvConverter('plusCompanies_controllo.csv')
+        baseCompaniesSorted = csvConverter('baseCompanies_controllo.csv')
+        allCompaniesForMap = sponsorCompaniesSorted + plusCompaniesSorted + baseCompaniesSorted
+        
+        saveFakeIndexes(allCompaniesForMap)
+
+        while True:
+            print('\nCon quale raggio vuoi clusterizzare le locations? (esprimi in metri)')
+            clusterRadius = int(input())/1000
+            locationsClusters = clusterize(clusterRadius, allCompanies)
+            print('\nSi sono formati {} clusters,'.format(len(locationsClusters)))
+            print('vuoi procedere con la generazione della mappa? [y/n]')
+            A = input()
+            if A == 'y':
+                break
+        saveLabels(locationsClusters, allCompaniesForMap)
 
     if Q == 'B':
         generateLocations()

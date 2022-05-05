@@ -94,6 +94,10 @@ def buildBaseTree(companies):
     for indexCompany, eachCompany in enumerate(companies):
         company = {}
 
+        # Id
+        id = eachCompany['id']
+        company['id'] = id
+
         # Titolo
         titolo = eachCompany['titolo']['it']
         company['Titolo'] = titolo
@@ -232,6 +236,10 @@ def buildPlusTree(companies):
     for indexCompany, eachCompany in enumerate(companies):
         company = {}
 
+        # Id
+        id = eachCompany['id']
+        company['id'] = id
+
         # Titolo
         titolo = eachCompany['titolo']['it']
         company['Titolo'] = titolo
@@ -367,6 +375,11 @@ def buildSponsorTree(companies):
 
     for indexCompany, eachCompany in enumerate(companies):
         company = {}
+
+        # Id
+        id = eachCompany['id']
+        company['id'] = id
+
 
         # Titolo
         titolo = eachCompany['titolo']['it']

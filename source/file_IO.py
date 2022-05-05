@@ -53,29 +53,33 @@ def saveExceptions(exceptions):
 
 import pandas as pd
 def saveLabels(clusters, companies):
-    sortedCompanies = sorted(companies, key=lambda d: d['id'])
-
     labels = []
-    for eachCompany in sortedCompanies:
-            links = 'None'
-            stackWdt = 'None'
-            for eachCluster in clusters:
-                    if eachCompany['id'] == eachCluster[0] and len(eachCluster)>1:
-                            links = ' '.join([str(int) for int in eachCluster[1:]])
-                            stackWdt = 2
+    counter = 1
+    for eachCompany in companies:
+        links = 'None'
+        stackWdt = 'None'
+        for eachCluster in clusters:
+                if eachCompany['id'] == eachCluster[0] and len(eachCluster)>1:
+                        links = ' '.join([str(int) for int in eachCluster[1:]])
+                        stackWdt = 2
         
-            label = {
-                    'id' : eachCompany['id'],
-                    'position': 'btmRgt',
-                    'offsetX': 0,
-                    'offsetY': 0,
-                    'link': links,
-                    'stackWdt': stackWdt
-            }
-            labels.append(label)
-            
+        label = {
+                'id' : eachCompany['id'],
+                'fakeId': counter,
+                'position': 'btmRgt',
+                'offsetX': 0,
+                'offsetY': 0,
+                'link': links,
+                'stackWdt': stackWdt
+        }
+        labels.append(label)
+        counter += 1
+    
+    sortedLabels = sorted(labels, key=lambda d: d['id'])
+    #print(labels)        
     csvPath = '/'.join([PROJECT_FOLDER, 'build', 'map', 'labels.csv'])
-    pd.DataFrame(labels).to_csv(csvPath, sep='\t', index=False)
+    df = pd.DataFrame(sortedLabels)#.to_csv(csvPath, sep='\t', index=False)
+    df.to_csv(csvPath, sep='\t', index=False)
     
 def saveFakeIndexes(companies):
     '''
@@ -92,6 +96,6 @@ def saveFakeIndexes(companies):
             'fakeID' : companyFakeId
         })
         counter += 1
-        
+    fakeIDsSorted = sorted(fakeIDs, key=lambda d: d['ID'] )    
     csvPath = '/'.join([PROJECT_FOLDER, 'build', 'map', 'fakeIDs.csv'])
-    pd.DataFrame(fakeIDs).to_csv(csvPath, sep='\t', index=False)
+    pd.DataFrame(fakeIDsSorted).to_csv(csvPath, sep='\t', index=False)
