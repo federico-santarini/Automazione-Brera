@@ -529,3 +529,12 @@ def paginateSponsorCompanies(companies, startIndex, N):
     fileName = '/'.join([PROJECT_FOLDER, 'build','sponsor', 'SponsorCompanies_datamerge.csv'])
     paginate(N, companiesList).to_csv(fileName, index=False, encoding='utf-16')
 
+def buildCompaniesList(allCompanies):
+    allCompaniesSorted = sorted(allCompanies, key=lambda d: d['titolo']['it'])
+    outFile = '/'.join([PROJECT_FOLDER, 'build','exibithorsList.txt'])
+
+    with open(outFile, 'w') as f:
+        for cc in allCompaniesSorted:
+            f.write('\n' + cc['titolo']['it'])
+            f.write('\n' + cc['location']['indirizzo'])
+            f.write('\n')

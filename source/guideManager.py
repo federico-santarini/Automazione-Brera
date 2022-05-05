@@ -24,6 +24,7 @@ importlib.reload(builders)
 from builders import buildFileTree
 from builders import buildBaseTree, buildPlusTree, buildSponsorTree
 from builders import paginateBaseCompanies, paginatePlusCompanies, paginateSponsorCompanies
+from builders import buildCompaniesList
 
 
 import file_IO
@@ -55,9 +56,9 @@ baseStartIndex = len(sponsorCompanies) + len(plusCompanies)+1
 
 print('\nCOSA VUOI GENERARE?')
 while True:
-    Q1 = input('\nA: Scaricare loghi e immagini\nB: Generare csv di controllo\nC: Generare csv per inDesign\nD: Generare la mappa\n').upper()
+    Q1 = input('\nA: Scaricare loghi e immagini\nB: Generare csv di controllo\nC: Generare csv per inDesign\nD: Generare la mappa\nE: Generare exibithors recap\n').upper()
 
-    if Q1 not in ['A','B','C','D']:
+    if Q1 not in ['A','B','C','D','E']:
         print('\nWARNING: Risposta non valida')
     else:
         break
@@ -177,8 +178,14 @@ if Q1 == 'D':
                 if A == 'y':
                     break
             saveLabels(locationsClusters, allCompanies)
+            # Invece che allCompanies qui tocca fare un merge derivato dai csv di controllo tramite csvConverter()
             saveFakeIndexes(allCompanies)
             generateLocations()
 
     if Q == 'B':
         generateLocations()
+
+# Generazione Lista
+if Q1 == 'E':
+    buildCompaniesList(allCompanies)
+    print('\nProcesso completato con successo!')
