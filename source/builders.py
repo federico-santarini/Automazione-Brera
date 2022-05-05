@@ -543,11 +543,19 @@ def paginateSponsorCompanies(companies, startIndex, N):
     paginate(N, companiesList).to_csv(fileName, index=False, encoding='utf-16')
 
 def buildCompaniesList(allCompanies):
-    allCompaniesSorted = sorted(allCompanies, key=lambda d: d['titolo']['it'])
-    outFile = '/'.join([PROJECT_FOLDER, 'build','exibithorsList.txt'])
+    ll = []
+    for company in allCompanies:
+        for exhibitor in company['espositori']:
+            map = {}
+            map['nomeEspositore'] = exhibitor['nome']
+            map['indirizzo'] = company['location']['indirizzo']
+            ll.append(map)
 
+    ll = sorted(ll, key=lambda d: d['nomeEspositore'])
+
+    outFile = 'test.txt'
     with open(outFile, 'w') as f:
-        for cc in allCompaniesSorted:
-            f.write('\n' + cc['titolo']['it'])
-            f.write('\n' + cc['location']['indirizzo'])
+        for ee in sorted(ll, key=lambda d: d['nomeEspositore'].lower()):
+            f.write('\n' + ee['nomeEspositore'])
+            f.write('\n' + ee['indirizzo'])
             f.write('\n')
