@@ -12,47 +12,22 @@ Il software utilizza linguaggio python per la generazione di files csv successiv
 ## 1. Installazione
 Il Software necessita di una serie di tools open source per funzionare correttamente. Di seguito le istruzione per settare correttamente il tuo computer. I programmi verranno installati tramite il terminale
 
-### 1.1 Apri il terminale
-Nel Finder, apri la cartella /Applicazioni/Utility, quindi fai doppio clic su Terminale.
+### 1.1 Installa Anaconda
+Conda è un pacchetto open source per la gestione di ambienti di sviluppo. Conda installa, esegue e aggiorna rapidamente i pacchetti e le relative dipendenze.
 
-### 1.2 Assicurati che Homebrew sia installato
-[Homebrew](https://brew.sh/index_it) è un gestore di pacchetti per macos, prima di proseguire assicurati che sia installato.
+Scarica ed esegui l'installazione di conda da questo link: https://www.anaconda.com/products/distribution
 
-1. Digita `which brew` sul terminale e premi invio 
-2. Se l'output fosse: `brew not found` Homebrew non è presente, installalo con il seguente comando (potrebbe richiedere diversi minuti):
-`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+### 1.2 Crea un virtual environment
 
-### 1.3 Installa pyenv
-Pyenv è un pacchetto che consente di passare facilmente tra più versioni di Python.
+1. Nel Finder, apri la cartella /Applicazioni/Utility, quindi fai doppio clic su Terminale.
+2. Digita il seguente comando per creare un virtual environment chiamato *AutBreraEnv3.8.5*: `conda create --name AutBreraEnv3.8.5 python=3.8.5`
 
-1. Copia il seguente comando e premi invio: `brew install pyenv`
-2. Configura pyenv con i seguenti comandi:
+### 1.3 Installa dipendenze
+1. Attiva il virtual environment digitando `conda activate AutBreraEnv3.8.5` nel terminale
+2. digita `cd percorso/alla/cartella/source` nel terminale, sostituendo *percorso/alla/cartella/source* con il percorso alla cartella *source* (su mac puoi ottenere il percorso di una cartella selezionandola e premento `alt+cmd+c`). Alternativamente esegui un drag and drop della cartella *source* sull'icona del terminale nel dock.
+3. Installa le dipendenze necessarie al software con il seguente comando: `pip install -r requirements.txt`
 
-`echo 'eval "$(pyenv init --path)"' >> ~/.zprofile`
-
-`echo 'eval "$(pyenv init -)"' >> ~/.zshrc`
-
-### 1.4 Installa pyenv-virtualenv
-pyenv-virtualenv è un plugin pyenv che fornisce funzionalità per gestire virtual environment.
-
-1. Copia il seguente comando e premi invio: `pyenv-virtualenv `
-2. Configura pyenv-virtualenv con il seguente comando: `eval "$(pyenv virtualenv-init -)" `
-
-### 1.5 Installa python 3.8.5 tramite pyenv
-Adesso che pyenv è correttamente configurato, puoi usarlo per installare python 3.8.5
-
-1. Copia il seguente comando e premi invio: `pyenv install -v 3.8.5 `
-
-### 1.6 Crea un virtual environment
-
-1. digita `cd percorso/alla/cartella/source` nel terminale, sostituendo *percorso/alla/cartella/source* con il percorso alla cartella *source* (su mac puoi ottenere il percorso di una cartella selezionandola e premento `alt+cmd+c`). Alternativamente esegui un drag and drop della cartella *source* sull'icona del terminale nel dock.
-2. Crea un virtual environment chiamato *AutBreraEnv3.8.5*: `pyenv virtualenv 3.8.5 AutBreraEnv3.8.5 `
-3. Rendi il virtual environment default per il software `pyenv local AutBreraEnv3.8.5`
-
-### 1.5 Installa dipendenze
-4. Installa le dipendenze necessarie al software con il seguente comando: `pip install -r requirements.txt`
-
-### 1.6 Installa script InDesgin
+### 1.4 Installa script InDesgin
 1. Apri Adobe InDesign.
 2. Vai a `Window` > `Utility` > `Script`.
 3. Nel pannello `Script`, fai clic con il pulsante destro del mouse su `User` e scegli `Rivela nel Finder`
@@ -87,18 +62,24 @@ Il file di setup serve a direzionare il programma alla giusta cartella di proget
 ## 3. Generazione Files
 ### 3.1 Apri il terminale
 Nel Finder, apri la cartella /Applicazioni/Utility, quindi fai doppio clic su Terminale.
-### 3.2 cambia la working directory
+
+### 3.2 Attiva il virtual environment
+1. digita `conda activate AutBreraEnv3.8.5` nel terminale
+
+### 3.3 cambia la working directory
 1. digita `cd percorso/alla/cartella/source` nel terminale, sostituendo *percorso/alla/cartella/source* con il percorso alla cartella *source* (su mac puoi ottenere il percorso di una cartella selezionandola e premento `alt+cmd+c`).
 
-### 3.4 Avvia il software
+### 3.5 Avvia il software
 1. Avvia il software copiando il seguente comando sul terminale: `python guideManager.py`
 
-### 3.5 Segui le istruzuioni sul terminale
+### 3.6 Segui le istruzuioni sul terminale
 Il software chiederà di inserire una serie di input in modo da generare i file correttamente.
 
 ## 4. Impaginazione
 
-### 4.2 Genera Documento
+Alcuni espositori caricano delle cartelle zippate al posto del logo che programma scarica e decomprime. Il nome del file corretto va poi agiunto manualmente nel csv di controllo prima di generare quelli per datamerge.
+
+### 4.1 Genera Documento
 1. Nella cartella templates/layout scegli il layout e apri il file indesign
 2. Su InDesign, apri il pannello Data Merge: `window` > `utilities` > `data merge`
 3. Dalle opzioni del pannello `Data Merge` seleziona `select data source` e seleziona il file csv contenente i dati ordinati
@@ -113,4 +94,7 @@ Verrà generato un documento a pagine singole contenente i dati impaginati.
 4. Esegui doppio click sullo script `index.jsx` per eseguirlo
 5. Salva il documento
 
-
+### 4.3 Generazione mappa
+1. Genera la mappa seguendo le istruzioni del software.
+2. Se generi la mappa per la prima volta inserisci il raggio (in metri) con cui vuoi che siano clusterizzate le location
+3. Una volta generata la mappa, può essere importata in illustrator ed editata a piacere. (i cluster saranno originariamente di colore blu mentre le location verdi per una migliore distinzione in fase di editing)
